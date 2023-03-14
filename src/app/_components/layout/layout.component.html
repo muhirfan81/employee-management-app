@@ -1,0 +1,37 @@
+<div id="wrapper">
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark" [ngClass]="{'sidebar-show' : showSidebar}" >
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
+            <!-- <div class="sidebar-brand-icon rotate-n-15">
+                <i class="fas fa-laugh-wink"></i>
+            </div> -->
+            <div class="sidebar-brand-text mx-3">{{userDetail?.firstName}} {{userDetail?.lastName}}</div>
+        </a>
+        <hr class="sidebar-divider mt">
+        <li class="nav-item " [ngClass]="{ 'active': currentUrl == '/' || currentUrl == ''}">
+            <a routerLink="/" class="nav-link" href="#">
+                <span>Dashboard</span></a>
+        </li>
+        <li class="nav-item" [ngClass]="{ 'active': currentUrl == '/employee' }">
+            <a routerLink="/employee" class="nav-link" href="#">
+                <span>Employee Management</span></a>
+        </li>
+
+        <a (click)="doLogout()" class="sidebar-footer d-flex align-items-center justify-content-center" href="#">
+            <div class="sidebar-brand-text mx-3">Logout</div>
+        </a>
+    </ul>
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                <button (click)="openSideBar()"  class="btn btn-link d-md-none rounded-circle mr-3">
+                    <i class="icon icon-bars"></i>
+                </button>
+                <div class="sidebar-brand-text mx-3">{{userDetail?.firstName}} {{userDetail?.lastName}}</div>
+            </nav>
+            <div class="container-fluid" style="height: 100vh; overflow-y: scroll; padding-bottom: 20px;">
+                <app-alert></app-alert>
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</div>

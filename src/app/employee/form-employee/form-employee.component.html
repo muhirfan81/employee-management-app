@@ -1,0 +1,101 @@
+<ng-container>
+    <div class="d-sm-flex align-items-center justify-content-between mt-4">
+        <h1 class="h3 mb-0 text-gray-800">{{mode}} Employee</h1>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <form class="row" [formGroup]="form">
+                <div class="col-md-6 p-4">
+                    <label class="form-label">First Name</label>
+                    <input formControlName="firstName" type="text" class="form-control" placeholder="First Name" />
+                    <div *ngIf="submitted && formEmployee.firstName.errors" class="invalid-feedback">
+                        <div *ngIf="formEmployee.firstName.errors.required">First Name is required</div>
+                    </div>
+                </div>
+                <div class="col-md-6 p-4">
+                    <label class="form-label">Last Name</label>
+                    <input formControlName="lastName" type="text" class="form-control" placeholder="Last Name" />
+                    <div *ngIf="submitted && formEmployee.lastName.errors" class="invalid-feedback">
+                        <div *ngIf="formEmployee.lastName.errors.required">Last Name is required</div>
+                    </div>
+                </div>
+                <div class="col-md-6 p-4">
+                    <label class="form-label">Username</label>
+                    <input formControlName="username" type="text" class="form-control" placeholder="Username" />
+                    <div *ngIf="submitted && formEmployee.username.errors" class="invalid-feedback">
+                        <div *ngIf="formEmployee.username.errors.required">Username is required</div>
+                    </div>
+                    <div *ngIf="submitted && inValidUsername" class="invalid-feedback">
+                        <div >Invalid Username Format</div>
+                    </div>
+                </div>
+                <div class="col-md-6 p-4">
+                    <label class="form-label">Email</label>
+                    <input formControlName="email" type="text" class="form-control" placeholder="Email" />
+                    <div *ngIf="submitted && formEmployee.email.errors" class="invalid-feedback">
+                        <div *ngIf="formEmployee.email.errors.required">Email is required</div>
+                    </div>
+                    <div *ngIf="submitted && inValidEmail" class="invalid-feedback">
+                        <div>Invalid Email Format</div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 p-4">
+                    <label class="form-label">Group</label>
+                    <app-select-search [selectedItem]="currentSelectedItem" [items]="items" [showSearch]="showSearch"
+                        [showStatus]="showStatus" [showError]="showError"
+                        (itemChange)="onItemChange($event)"></app-select-search>
+                    <div *ngIf="submitted && formEmployee.group.errors" class="invalid-feedback">
+                        <div *ngIf="formEmployee.group.errors.required">Group is required</div>
+                    </div>
+                </div>
+                <div class="col-md-6 p-4">
+                    <label class="form-label">Basic Salary</label>
+                    <input formControlName="basicSalary" type="number" class="form-control"
+                        placeholder="Basic Salary" />
+                    <div *ngIf="submitted && formEmployee.basicSalary.errors" class="invalid-feedback">
+                        <div *ngIf="formEmployee.basicSalary.errors.required">Basic Salary is required</div>
+                    </div>
+                </div>
+                <div class="col-md-6 p-4">
+                    <label class="form-label">Status</label>
+                    <select formControlName="status" class="form-select" aria-label="Default select example"
+                        placeholder="select status">
+                        <option value="" disabled>Select status</option>
+                        <option value="married">Married</option>
+                        <option value="single">Single</option>
+                        <option value="divorced">divorced</option>
+                        <option value="separated">separated</option>
+                    </select>
+                    <div *ngIf="submitted && formEmployee.status.errors" class="invalid-feedback">
+                        <div *ngIf="formEmployee.status.errors.required">Status is required</div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 p-4">
+                    <label class="form-label">Birth Date</label>
+                    <input formControlName="birthDate" type="datetime-local" class="form-control"
+                        placeholder="Birth Date" max="{{today}}" />
+                    <div *ngIf="submitted && formEmployee.birthDate.errors" class="invalid-feedback">
+                        <div *ngIf="formEmployee.birthDate.errors.required">Birth Date is required</div>
+                    </div>
+                </div>
+                <div class="col-md-3 p-4">
+                    <label class="form-label">Description</label>
+                    <input formControlName="description" type="datetime-local" class="form-control"
+                        placeholder="Birth Date" />
+                    <div *ngIf="submitted && formEmployee.description.errors" class="invalid-feedback">
+                        <div *ngIf="formEmployee.description.errors.required">Description is required</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <div class="d-flex justify-content-between">
+                <a class="btn" (click)="back()">Back</a>
+                <a class="btn btn-primary" (click)="doSave()" [ngClass]="{'no-drop': loading}">Save</a>
+            </div>
+        </div>
+    </div>
+</ng-container>

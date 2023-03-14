@@ -1,0 +1,139 @@
+@import "../../../style/variable";
+
+$variable-prefix: "app";
+$table-bg: transparent;
+$table-accent-bg: transparent;
+$table-striped-color: #212529;
+$table-striped-bg: rgba(0, 0, 0, 0.05);
+$table-active-color: #212529;
+$table-active-bg: rgba(0, 0, 0, 0.1);
+$table-hover-color: #212529;
+$table-hover-bg: rgba(0, 0, 0, 0.075);
+$spacer: 1rem;
+$table-color: #212529;
+$table-cell-vertical-align: top;
+$table-border-color: #dee2e6;
+
+$table-cell-padding-y: 0.5rem;
+$table-cell-padding-x: 0.5rem;
+$table-border-width: 1px;
+
+$table-group-separator-color: currentColor;
+$table-bg-scale: -80%;
+$table-hover-bg-factor: .075;
+$table-striped-bg-factor: .05;
+
+$body-bg: #000;
+$body-color: #111;
+
+$table-variants: (
+    "primary": shift-color($primary-color, $table-bg-scale),
+    "secondary": shift-color($secondary-color, $table-bg-scale),
+    "success": shift-color($success, $table-bg-scale),
+    "info": shift-color($info, $table-bg-scale),
+    "warning": shift-color($warning, $table-bg-scale),
+    "danger": shift-color($error, $table-bg-scale),
+    "light": $white,
+    "dark": $dark-3,
+);
+
+@mixin table-variant($state, $background) {
+    .table-#{$state} {
+        $color: color-contrast(opaque($body-bg, $background));
+
+        $striped-bg: mix($color, $background, percentage($table-striped-bg-factor));
+        $active-bg: mix($color, $background, percentage($table-active-bg-factor));
+
+        --#{$variable-prefix}table-bg: #{$background};
+        --#{$variable-prefix}table-striped-bg: #{$striped-bg};
+        --#{$variable-prefix}table-striped-color: #{color-contrast($striped-bg)};
+        --#{$variable-prefix}table-active-bg: #{$active-bg};
+        --#{$variable-prefix}table-active-color: #{color-contrast($active-bg)};
+        --#{$variable-prefix}table-hover-bg: #{$hover-bg};
+        --#{$variable-prefix}table-hover-color: #{color-contrast($hover-bg)};
+
+        color: $color;
+        border-color: mix($color, $background, percentage($table-border-factor));
+    }
+}
+
+.table {
+    --#{$variable-prefix}table-bg: #{$table-bg};
+    --#{$variable-prefix}table-accent-bg: #{$table-accent-bg};
+    --#{$variable-prefix}table-striped-color: #{$table-striped-color};
+    --#{$variable-prefix}table-striped-bg: #{$table-striped-bg};
+    --#{$variable-prefix}table-active-color: #{$table-active-color};
+    --#{$variable-prefix}table-active-bg: #{$table-active-bg};
+    --#{$variable-prefix}table-hover-color: #{$table-hover-color};
+    --#{$variable-prefix}table-hover-bg: #{$table-hover-bg};
+
+    width: 100%;
+    margin-bottom: $spacer;
+    color: $table-color;
+    vertical-align: $table-cell-vertical-align;
+    border-color: $table-border-color;
+
+    > :not(caption)>*>* {
+        padding: $table-cell-padding-y $table-cell-padding-x;
+        background-color: var(--#{$variable-prefix}table-bg);
+        border-bottom-width: $table-border-width;
+        box-shadow: inset 0 0 0 9999px var(--#{$variable-prefix}table-accent-bg);
+    }
+
+    >tbody {
+        vertical-align: inherit;
+    }
+
+    >thead {
+        vertical-align: bottom;
+    }
+
+    > :not(:last-child)> :last-child>* {
+        border-bottom-color: $table-group-separator-color;
+    }
+}
+
+.caption-top {
+    caption-side: top;
+}
+
+
+.table-bordered {
+    > :not(caption)>* {
+        border-width: $table-border-width 0;
+
+        >* {
+            border-width: 0 $table-border-width;
+        }
+    }
+}
+
+.table-borderless {
+    > :not(caption)>*>* {
+        border-bottom-width: 0;
+    }
+}
+
+.table-striped {
+    >tbody>tr:nth-of-type(odd) {
+        --#{$variable-prefix}table-accent-bg: var(--#{$variable-prefix}table-striped-bg);
+        color: var(--#{$variable-prefix}table-striped-color);
+    }
+}
+
+.table-active {
+    --#{$variable-prefix}table-accent-bg: var(--#{$variable-prefix}table-active-bg);
+    color: var(--#{$variable-prefix}table-active-color);
+}
+
+.table-hover {
+    >tbody>tr:hover {
+        --#{$variable-prefix}table-accent-bg: var(--#{$variable-prefix}table-hover-bg);
+        color: var(--#{$variable-prefix}table-hover-color);
+    }
+}
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}

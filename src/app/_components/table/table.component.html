@@ -1,0 +1,105 @@
+<div class="table-responsive">
+    <table class="table table-striped">
+        <tbody *ngIf="loading; else loaded">
+            <tr>
+                <td style="text-align: center;">
+                    Please wait...
+                </td>
+            </tr>
+        </tbody>
+        <ng-template #loaded>
+            <tbody *ngIf="!DataSource.length; else dataFound">
+                <tr>
+                    <td style="text-align: center;">
+                        No Data
+                    </td>
+                </tr>
+            </tbody>
+            <ng-template #dataFound>
+                <thead>
+                    <tr>
+                        <th *ngFor="let col of Column" [ngStyle]="col.style && (col.style)">
+                            <ng-container
+                                *ngIf="col.canSort && col.filter;then filterSort else notFilterSort"></ng-container>
+                            <ng-template #filterSort>
+                                <div class="d-flex justify-content-center">
+                                    <span style="margin-right: 5px;">{{col.text}}</span>
+                                    <a href="javascript:;" (click)="openCloseFilterModal(col.filter.dataSource, col.key)">
+                                        <i class="icon icon-filter"></i>
+                                    </a>
+                                </div>
+                            </ng-template>
+    
+    
+                            <ng-template #notFilterSort>
+                                <div *ngIf="col.filter; else notFilter">
+                                    <div class="d-flex justify-content-center">
+                                        <span style="margin-right: 5px;">{{col.text}}</span>
+                                        <a href="javascript:;"
+                                            (click)="openCloseFilterModal(col.filter.dataSource, col.key)">
+                                            <i class="icon icon-filter"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </ng-template>
+                            <ng-template #notFilter>
+                                <div *ngIf="col.canSort; else notFilterOrSort" class="d-flex justify-content-center">
+                                    <span style="margin-right: 5px;">{{col.text}}</span>
+                                    <a href="javascript:;" (click)="doSort(col.key)">
+                                        <i class="icon" [ngClass]="{
+                                            'icon-sort': !isSorted(col.key), 
+                                            'icon-sort-up': isSorted(col.key) == 'asc', 
+                                            'icon-sort-down': isSorted(col.key) == 'desc'}"></i>
+                                    </a>
+                                </div>
+                            </ng-template>
+    
+                            <ng-template #notFilterOrSort>
+                                <span style="margin-right: 5px;">{{col.text}}</span>
+                            </ng-template>
+    
+    
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of DataSource">
+                        <td *ngFor="let col of Column" [ngStyle]="data.style && (data.style[col.key])">
+                            <span *ngIf="ifArray(data[col.key])">
+                                <span *ngFor="let template of data[col.key]">
+                                    <a *ngIf="template.type == 'button'" [ngClass]="template.class"
+                                        (click)="callEvent(template.event.click())">{{template.text}}</a>
+                                </span>
+                            </span>
+                            <span *ngIf="ifString(data[col.key]) || ifNumber(data[col.key])"
+                                [innerHTML]="data[col.key]"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </ng-template>
+        </ng-template>
+
+    </table>
+</div>
+
+<div class="modal" tabindex="-1" [ngClass]="{'fade': filterModal, 'show': filterModal}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Filter</h5>
+            </div>
+            <div class="modal-body">
+                <div class="form-check" *ngFor="let dt of filterDataSource">
+                    <input class="form-check-input" type="checkbox" value="{{dt.id}}" [(ngModel)]="dt.checked">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        {{dt.name}}
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="openCloseFilterModal()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="doFilter()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

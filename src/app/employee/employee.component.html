@@ -1,0 +1,58 @@
+<div class="d-sm-flex align-items-center justify-content-between mt-4">
+    <h1 class="h3 mb-0 text-gray-800">Employee Management</h1>
+    <a routerLink="create" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+            class="fas fa-download fa-sm text-white-50"></i> Add Employee</a>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        <div class="d-sm-flex justify-content-between">
+            <div>
+                <input [(ngModel)]="searchKeyword" (keyup)="doSearch()" type="text" class="form-control"
+                    placeholder="search employee name">
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <app-table [loading]="loading" [Column]="column" [DataSource]="employeeData" (filter)="doFilter($event)"
+            (sort)="doSort($event)"></app-table>
+    </div>
+    <div class="card-footer">
+        <div class="row">
+            <div class="col">
+                <div class="row" style="margin-top: 16px;">
+                    <label class="col-sm-2 col-form-label" style="margin-right: 10px;">per page</label>
+                    <div class="col-sm-10">
+                        <select [(ngModel)]="limit" (change)="onChangeLimit()" class="form-select form-select-sm ">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="40">40</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col d-flex justify-content-end">
+                <app-pagination [currentPage]="currentPage" [totalPage]="totalPage"
+                    (pageChange)="onChangePage($event)"></app-pagination>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" [ngClass]="{'fade': confirmModalShow, 'show': confirmModalShow}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmation</h5>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure want to delete this username ({{willDeleteUsername}}) ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn " (click)="openCloseConfirm()">Close</button>
+                <button type="button" class="btn btn-danger" (click)="doDelete()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
